@@ -43,11 +43,84 @@ static const OptionDef options[] = {
     CMDUTILS_COMMON_OPTIONS
 };
 
+// FFmpeg打开输入文件
+// https://ffmpeg.xianwaizhiyin.net/api-ffmpeg/input.html
+
+int avformat_open_input_example()
+{
+    av_log(NULL, AV_LOG_ERROR, "----- avformat_open_input_example ------ \n");
+
+    AVFormatContext *fmt_ctx = NULL;
+    int type = 1;
+    int err;
+    char filename[] = "juren-5s.mp4";
+
+    fmt_ctx = avformat_alloc_context();
+    if(!fmt_ctx)
+    {
+        av_log(NULL, AV_LOG_INFO, "error code %d \n", AVERROR(ENOMEM));
+        return 1;
+    }
+
+    if(1 == type)
+    {
+        if((err = avformat_open_input(&fmt_ctx, filename, NULL, NULL)) < 0)
+        {
+            av_log(NULL, AV_LOG_INFO, "error code %d \n", err);
+        }
+        else
+        {
+            av_log(NULL, AV_LOG_INFO, "open success \n");
+            av_log(NULL, AV_LOG_INFO, "url - %s \n", fmt_ctx->url);
+            av_log(NULL, AV_LOG_INFO, "duration - %I64d \n", fmt_ctx->duration);
+            av_log(NULL, AV_LOG_INFO, "nb_streams - %u \n", fmt_ctx->nb_streams);
+            for(int i = 0; i < fmt_ctx->nb_streams; i++)
+            {
+                av_log(NULL, AV_LOG_INFO, "stream codec_type - %d \n", fmt_ctx->streams[i]->codecpar->codec_type);
+            }
+            av_log(NULL, AV_LOG_INFO, "iformat name - %s \n", fmt_ctx->iformat->name);
+            av_log(NULL, AV_LOG_INFO, "iformat long name - %s \n", fmt_ctx->iformat->long_name);
+        }
+
+    }
+
+    if(2 == type)
+    {
+        // 设置探测大小
+        AVDictionary *format_opts = NULL;
+        av_dict_set(&format_opts, "probesize", "32", 0);
+
+        if((err = avformat_open_input(&fmt_ctx, filename, NULL, &format_opts)) < 0)
+        {
+            av_log(NULL, AV_LOG_INFO, "error code %d \n", err);
+        }
+        else
+        {
+            avformat_find_stream_info(fmt_ctx, NULL);
+            av_log(NULL, AV_LOG_INFO, "open success \n");
+            av_log(NULL, AV_LOG_INFO, "url - %s \n", fmt_ctx->url);
+            av_log(NULL, AV_LOG_INFO, "duration - %I64d \n", fmt_ctx->duration);
+            av_log(NULL, AV_LOG_INFO, "nb_streams - %u \n", fmt_ctx->nb_streams);
+            for(int i = 0; i < fmt_ctx->nb_streams; i++)
+            {
+                av_log(NULL, AV_LOG_INFO, "stream codec_type - %d \n", fmt_ctx->streams[i]->codecpar->codec_type);
+            }
+            av_log(NULL, AV_LOG_INFO, "iformat name - %s \n", fmt_ctx->iformat->name);
+            av_log(NULL, AV_LOG_INFO, "iformat long name - %s \n", fmt_ctx->iformat->long_name);
+        }
+        av_dict_free(&format_opts);
+    }
+
+    return 0;
+}
+
 // FFmpeg读取文件内容AVPacket
 // https://ffmpeg.xianwaizhiyin.net/api-ffmpeg/avpacket.html
 
-int avpacket_example()
+int AVPacket_example()
 {
+    av_log(NULL, AV_LOG_ERROR, "----- AVPacket_example ------ \n");
+
     AVFormatContext *fmt_ctx = NULL;
     int type = 2;
 
@@ -57,13 +130,13 @@ int avpacket_example()
     fmt_ctx = avformat_alloc_context();
     if(!fmt_ctx)
     {
-        printf("error code %d \n", AVERROR(ENOMEM));
+        av_log(NULL, AV_LOG_INFO, "error code %d \n", AVERROR(ENOMEM));
         return ENOMEM;
     }
 
     if((err = avformat_open_input(&fmt_ctx, filename, NULL, NULL)) < 0)
     {
-        printf("error code %d \n", err);
+        av_log(NULL, AV_LOG_INFO, "error code %d \n", err);
         return err;
     }
 
@@ -74,20 +147,20 @@ int avpacket_example()
         ret = av_read_frame(fmt_ctx, pkt);
         if(ret < 0)
         {
-            printf("read fail \n");
+            av_log(NULL, AV_LOG_INFO, "read fail \n");
             return ret;
         }
         else
         {
-            printf("read success \n");
-            printf("stream 0 type : %d \n", fmt_ctx->streams[0]->codecpar->codec_type);
-            printf("stream 1 type : %d \n", fmt_ctx->streams[1]->codecpar->codec_type);
-            printf("stream_index : %d \n", pkt->stream_index);
-            printf("duration : %I64d ,time_base : %d/%d \n", pkt->duration,
+            av_log(NULL, AV_LOG_INFO, "read success \n");
+            av_log(NULL, AV_LOG_INFO, "stream 0 type : %d \n", fmt_ctx->streams[0]->codecpar->codec_type);
+            av_log(NULL, AV_LOG_INFO, "stream 1 type : %d \n", fmt_ctx->streams[1]->codecpar->codec_type);
+            av_log(NULL, AV_LOG_INFO, "stream_index : %d \n", pkt->stream_index);
+            av_log(NULL, AV_LOG_INFO, "duration : %I64d ,time_base : %d/%d \n", pkt->duration,
                 fmt_ctx->streams[1]->time_base.num, fmt_ctx->streams[0]->time_base.den);
-            printf("size : %d \n", pkt->size);
-            printf("pos : %I64d \n", pkt->pos);
-            printf("data : %x %x %x %x %x %x %x \n",
+            av_log(NULL, AV_LOG_INFO, "size : %d \n", pkt->size);
+            av_log(NULL, AV_LOG_INFO, "pos : %I64d \n", pkt->pos);
+            av_log(NULL, AV_LOG_INFO, "data : %x %x %x %x %x %x %x \n",
                 pkt->data[0], pkt->data[1], pkt->data[2], pkt->data[3], pkt->data[4],
                 pkt->data[5], pkt->data[6]);
         }
@@ -96,7 +169,7 @@ int avpacket_example()
 
     if(2 == type)
     {
-        printf("stream numbers : %d \n", fmt_ctx->nb_streams);
+        av_log(NULL, AV_LOG_INFO, "stream numbers : %d \n", fmt_ctx->nb_streams);
 
         AVPacket *pkt = av_packet_alloc();
         int ret = 0, i;
@@ -105,7 +178,7 @@ int avpacket_example()
             ret = av_read_frame(fmt_ctx, pkt);
             if(ret < 0)
             {
-                printf("read fail \n");
+                av_log(NULL, AV_LOG_INFO, "read fail \n");
                 return ret;
             }
             else
@@ -113,18 +186,18 @@ int avpacket_example()
                 enum AVMediaType type = fmt_ctx->streams[pkt->stream_index]->codecpar->codec_type;
                 if(type == AVMEDIA_TYPE_VIDEO)
                 {
-                    printf("-------- stream video ------- \n");
+                    av_log(NULL, AV_LOG_INFO, "-------- stream video ------- \n");
                 }
                 else if(type == AVMEDIA_TYPE_AUDIO)
                 {
-                    printf("-------- stream audio ------- \n");
+                    av_log(NULL, AV_LOG_INFO, "-------- stream audio ------- \n");
                 }
 
-                printf("duration : %I64d ,time_base : %d/%d \n", pkt->duration,
+                av_log(NULL, AV_LOG_INFO, "duration : %I64d ,time_base : %d/%d \n", pkt->duration,
                     fmt_ctx->streams[pkt->stream_index]->time_base.num, fmt_ctx->streams[pkt->stream_index]->time_base.den);
-                printf("size : %d \n", pkt->size);
-                printf("pos : %I64d \n", pkt->pos);
-                printf("data : %x %x %x %x %x %x %x \n",
+                av_log(NULL, AV_LOG_INFO, "size : %d \n", pkt->size);
+                av_log(NULL, AV_LOG_INFO, "pos : %I64d \n", pkt->pos);
+                av_log(NULL, AV_LOG_INFO, "data : %x %x %x %x %x %x %x \n",
                     pkt->data[0], pkt->data[1], pkt->data[2], pkt->data[3], pkt->data[4],
                     pkt->data[5], pkt->data[6]);
 
@@ -133,19 +206,75 @@ int avpacket_example()
         }
         av_packet_free(&pkt);
     }
+
+    return 0;
+}
+
+
+// 如何设置解复用器参数
+// https://ffmpeg.xianwaizhiyin.net/api-ffmpeg/demuxer_args.html
+
+int AVDictionary_example()
+{
+    av_log(NULL, AV_LOG_ERROR, "----- AVDictionary_example ------ \n");
+
+    AVFormatContext *fmt_ctx = NULL;
+    int err;
+    char filename[] = "juren-5s.mp4";
+
+    fmt_ctx = avformat_alloc_context();
+    if(!fmt_ctx)
+    {
+        av_log(NULL, AV_LOG_ERROR, "error code %d \n", AVERROR(ENOMEM));
+        return 1;
+    }
+
+    AVDictionary* format_opts = NULL;
+    AVDictionaryEntry *t;
+    av_dict_set(&format_opts, "formatprobesize", "10485760", AV_DICT_MATCH_CASE);
+    av_dict_set(&format_opts, "export_all", "1", AV_DICT_MATCH_CASE);
+    av_dict_set(&format_opts, "export_666", "1", AV_DICT_MATCH_CASE);
+
+    // 获取字典里的第一个属性
+    if((t = av_dict_get(format_opts, "", NULL, AV_DICT_IGNORE_SUFFIX)))
+    {
+        av_log(NULL, AV_LOG_INFO, "Option key: %s , value %s \n", t->key, t->value);
+    }
+    if((err = avformat_open_input(&fmt_ctx, filename, NULL, &format_opts)) < 0)
+    {
+        av_log(NULL, AV_LOG_ERROR, "error code %d \n", err);
+    }
+    else
+    {
+        av_log(NULL, AV_LOG_INFO, "open success \n");
+        av_log(NULL, AV_LOG_INFO, "duration: %I64d \n", fmt_ctx->duration);
+    }
+    // 再次，获取字典里的第一个属性
+    if((t = av_dict_get(format_opts, "", NULL, AV_DICT_IGNORE_SUFFIX)))
+    {
+        av_log(NULL, AV_LOG_INFO, "Option key: %s , value %s \n", t->key, t->value);
+    }
+
+    av_dict_free(&format_opts);
+
+    return 0;
 }
 
 /* Called from the main */
 int main(int argc, char **argv)
 {
-    av_log_set_level(AV_LOG_ERROR);
+    av_log_set_level(AV_LOG_INFO);
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
     parse_loglevel(argc, argv, options);
 
-    av_log(NULL, AV_LOG_ERROR, "start ffmpeg principle\n");
+    av_log(NULL, AV_LOG_INFO, "start ffmpeg principle\n");
 
-    avpacket_example();
+    avformat_open_input_example();
+
+    AVPacket_example();
+
+    AVDictionary_example();
 
     return 0;
 }
