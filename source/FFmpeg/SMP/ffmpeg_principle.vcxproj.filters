@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{21b1b47d-08d5-4cef-ae82-47f7eed1e4ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\fftools">
+      <UniqueIdentifier>{acbd31dc-d342-456d-be0e-b52667f4dc98}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\fftools\cmdutils.c">
+      <Filter>Source Files\fftools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fftools\ffmpeg_principle.c">
+      <Filter>Source Files\fftools</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
