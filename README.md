@@ -9,11 +9,11 @@
 + 生成解决方案
 
 ## 调试说明
-+ 项目的 debug 配置好像有问题，如果调试的时候找不到 ffmpegd.exe，根据[ShiftMediaProject具体使用](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/shift-media-project2.html)中的配置进行调试配置即可。
++ 项目的 debug 配置好像有问题，如果调试的时候找不到 ffmpegd.exe，根据 [ShiftMediaProject具体使用](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/shift-media-project2.html) 中的配置进行调试配置即可。
 
 ## Reference
-[安装 YASM 与 NASM](https://www.cnblogs.com/suiyek/p/15669562.html#%E4%BA%8C%E5%AE%89%E8%A3%85-yasm-%E4%B8%8E-nasm)
-[ShiftMediaProject项目介绍](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/shift-media-project.html)
-[ShiftMediaProject具体使用](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/shift-media-project2.html)
-[Windows下搭建FFmpeg开发调试环境](https://www.cnblogs.com/suiyek/p/15669562.html)
-[使用 myys2 与 msvc 编译 Ffmpeg](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/msys2-msvc.html)
+1. [安装 YASM 与 NASM](https://www.cnblogs.com/suiyek/p/15669562.html#%E4%BA%8C%E5%AE%89%E8%A3%85-yasm-%E4%B8%8E-nasm)
+2. [ShiftMediaProject项目介绍](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/shift-media-project.html)
+3. [ShiftMediaProject具体使用](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/shift-media-project2.html)
+4. [Windows下搭建FFmpeg开发调试环境](https://www.cnblogs.com/suiyek/p/15669562.html)
+5. [使用 myys2 与 msvc 编译 Ffmpeg](https://ffmpeg.xianwaizhiyin.net/debug-ffmpeg/msys2-msvc.html)
